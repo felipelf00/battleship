@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hidden {
+  display: none;
+}
+
+.board {
+  border: 2px solid black;
+  width: 300px;
+  height: 300px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.cell {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  box-sizing: border-box;
+}

@@ -18,3 +18,9 @@ test("sink ship when damage = length", () => {
   newShip.hit();
   expect(newShip.isSunk).toBe(true);
 });
+
+test("ship flips", () => {
+  const newShip = new Ship(2);
+  newShip.flip();
+  expect(newShip.orientation).toBe("vertical");
+});

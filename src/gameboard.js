@@ -34,14 +34,6 @@ class Gameboard {
     } else throw new Error("invalid placement");
   }
 
-  // placementIsValid(ship, x, y) {
-  //   if (ship.orientation === "horizontal") {
-  //     return x + ship.length - 1 > this.columns ? false : true;
-  //   } else {
-  //     return y + ship.length - 1 > this.rows ? false : true;
-  //   }
-  // }
-
   placementIsValid(ship, x, y) {
     if (ship.orientation === "horizontal") {
       if (x + ship.length - 1 > this.columns) return false;

@@ -2,11 +2,13 @@ const Ship = require("./ship");
 const Gameboard = require("./gameboard");
 
 class Player {
-  constructor(name) {
+  constructor(name, type) {
     this.name = name;
+    this.type = type;
   }
-  myBoard = new Gameboard();
-  myShips = this.generateShips();
+
+  board = new Gameboard();
+  ships = this.generateShips();
 
   generateShips() {
     const carrier = new Ship(5);
@@ -15,6 +17,12 @@ class Player {
     const submarine = new Ship(3);
     const patrolBoat = new Ship(2);
     return [carrier, battleShip, destroyer, submarine, patrolBoat];
+  }
+
+  computerPlays(opponent) {
+    let attackX = Math.floor(Math.random() * 10);
+    let attackY = Math.floor(Math.random() * 10);
+    opponent.Gameboard.receiveAttack(attackX, attackY);
   }
 }
 
