@@ -1,4 +1,5 @@
-const Ship = require("./ship");
+// const Ship = require("./ship");
+import Ship from "./ship";
 
 test("increase damage when hit", () => {
   const newShip = new Ship(3);
