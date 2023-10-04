@@ -1,31 +1,74 @@
 // const Player = require("./player");
 import Player from "./player";
 
-let players = [];
+// let players = [];
 
-function gameSetup(playerName, computerName) {
-  const player = new Player(playerName, "human");
-  const computer = new Player(computerName, "computer");
+const gameloop = {
+  players: [],
+  currentTurn: null,
 
-  //predetermined coordinates for now
-  player.board.placeShip(player.ships[0], 2, 2);
-  player.ships[1].flip();
-  player.board.placeShip(player.ships[1], 8, 2);
-  player.board.placeShip(player.ships[2], 2, 4);
-  player.ships[3].flip();
-  player.board.placeShip(player.ships[3], 2, 6);
-  player.board.placeShip(player.ships[4], 4, 6);
-  //same
-  computer.board.placeShip(computer.ships[0], 2, 2);
-  computer.ships[1].flip();
-  computer.board.placeShip(computer.ships[1], 8, 2);
-  computer.board.placeShip(computer.ships[2], 2, 4);
-  computer.ships[3].flip();
-  computer.board.placeShip(computer.ships[3], 2, 6);
-  computer.board.placeShip(computer.ships[4], 4, 6);
+  gameSetup(playerName, computerName) {
+    const player = new Player(playerName, "human");
+    const computer = new Player(computerName, "computer");
 
-  players = [];
-  players.push(player, computer);
-}
+    player.board.placeShip(player.ships[0], 1, 1);
+    player.ships[1].flip();
+    player.board.placeShip(player.ships[1], 7, 1);
+    player.board.placeShip(player.ships[2], 1, 3);
+    player.ships[3].flip();
+    player.board.placeShip(player.ships[3], 1, 5);
+    player.board.placeShip(player.ships[4], 3, 5);
+    //same
+    computer.board.placeShip(computer.ships[0], 1, 1);
+    computer.ships[1].flip();
+    computer.board.placeShip(computer.ships[1], 7, 1);
+    computer.board.placeShip(computer.ships[2], 1, 3);
+    computer.ships[3].flip();
+    computer.board.placeShip(computer.ships[3], 1, 5);
+    computer.board.placeShip(computer.ships[4], 3, 5);
 
-export { gameSetup, players };
+    this.players = [player, computer];
+    this.next();
+    this.currentTurn = player;
+  },
+
+  next() {
+    if (this.currentTurn === null) {
+      this.currentTurn = this.players[Math.round(Math.random() * 2)];
+      return;
+    }
+    if (this.currentTurn === this.players[0]) {
+      this.currentTurn = this.players[1];
+      // players[1].computerPlays(players[0]);
+    } else {
+      this.currentTurn = this.players[0];
+    }
+  },
+};
+
+// function gameSetup(playerName, computerName) {
+//   const player = new Player(playerName, "human");
+//   const computer = new Player(computerName, "computer");
+
+//   player.board.placeShip(player.ships[0], 1, 1);
+//   player.ships[1].flip();
+//   player.board.placeShip(player.ships[1], 7, 1);
+//   player.board.placeShip(player.ships[2], 1, 3);
+//   player.ships[3].flip();
+//   player.board.placeShip(player.ships[3], 1, 5);
+//   player.board.placeShip(player.ships[4], 3, 5);
+//   //same
+//   computer.board.placeShip(computer.ships[0], 1, 1);
+//   computer.ships[1].flip();
+//   computer.board.placeShip(computer.ships[1], 7, 1);
+//   computer.board.placeShip(computer.ships[2], 1, 3);
+//   computer.ships[3].flip();
+//   computer.board.placeShip(computer.ships[3], 1, 5);
+//   computer.board.placeShip(computer.ships[4], 3, 5);
+
+//   players = [];
+//   players.push(player, computer);
+// }
+
+// export { gameSetup, players };
+export default gameloop;

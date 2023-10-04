@@ -22,3 +22,19 @@ body {
   height: 30px;
   box-sizing: border-box;
 }
+
+.hit {
+  background-color: grey;
+}
+
+.ship {
+  background-color: green;
+}
+
+.ship.hit {
+  background-color: red;
+}
+
+.sunk {
+  background-color: rgb(63, 22, 22);
+}

@@ -23,9 +23,11 @@ class Player {
   }
 
   computerPlays(opponent) {
+    //add checking if attack is valid
     let attackX = Math.floor(Math.random() * 10);
     let attackY = Math.floor(Math.random() * 10);
-    opponent.Gameboard.receiveAttack(attackX, attackY);
+    opponent.board.receiveAttack(attackX, attackY);
+    return [attackX, attackY];
   }
 }
 
