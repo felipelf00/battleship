@@ -23,10 +23,23 @@ class Player {
   }
 
   computerPlays(opponent) {
-    //add checking if attack is valid
-    let attackX = Math.floor(Math.random() * 10);
-    let attackY = Math.floor(Math.random() * 10);
+    let valid = false;
+    let attackX;
+    let attackY;
+    while (!valid) {
+      attackX = Math.floor(Math.random() * 10);
+      attackY = Math.floor(Math.random() * 10);
+      console.log(opponent.board.hitList);
+      if (
+        !opponent.board.hitList.some(
+          (coordinate) => coordinate[0] === attackX && coordinate[1] === attackY
+        )
+      ) {
+        valid = true;
+      }
+    }
     opponent.board.receiveAttack(attackX, attackY);
+    console.log("computer attacked " + attackX + ", " + attackY);
     return [attackX, attackY];
   }
 }

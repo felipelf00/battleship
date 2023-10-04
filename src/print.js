@@ -41,6 +41,7 @@ function printNameForm() {
     document.querySelector("body").appendChild(leftPlayer);
     document.querySelector("body").appendChild(rightPlayer);
     fillBoard(gameloop.players[0]);
+    fillBoard(gameloop.players[1]); //only for debug
   });
 
   return formContainer;
@@ -76,10 +77,10 @@ function printBoard(player) {
           if (gameloop.currentTurn === gameloop.players[0]) {
             gameloop.players[1].board.receiveAttack(i, j);
             registerAttack(i, j, gameloop.players[1]);
-            console.log("human attacked at " + i + ", " + j);
+            // console.log("human attacked at " + i + ", " + j);
             gameloop.next();
             //set timeout for computer play
-            console.log(gameloop.players[1]);
+            // console.log(gameloop.players[1]);
             const computerAttack = gameloop.players[1].computerPlays(
               gameloop.players[0]
             );
@@ -98,11 +99,13 @@ function printBoard(player) {
 }
 
 function fillBoard(player) {
+  // console.log("filling board for " + player.name);
+  // console.log("1, 1 is " + player.board.board[1][1]);
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
       if (player.board.board[i][j] instanceof Ship) {
         const cell = document.querySelector(
-          `.cell[data-x="${i}"][data-y="${j}"]`
+          `.cell[data-x="${i}"][data-y="${j}"][data-type="${player.type}"]`
         );
         cell.classList.add("ship");
         if (player.board.board[i][j].isSunk) {

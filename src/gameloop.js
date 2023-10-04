@@ -26,7 +26,7 @@ const gameloop = {
     computer.ships[3].flip();
     computer.board.placeShip(computer.ships[3], 1, 5);
     computer.board.placeShip(computer.ships[4], 3, 5);
-
+    // console.log("1, 1 is: " + computer.board.board[1][1]);
     this.players = [player, computer];
     this.next();
     this.currentTurn = player;

@@ -35,6 +35,6 @@ body {
   background-color: red;
 }
 
-.sunk {
+.ship.hit.sunk {
   background-color: rgb(63, 22, 22);
 }
