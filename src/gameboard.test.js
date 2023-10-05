@@ -79,3 +79,15 @@ test("clearBoard clears board", () => {
     "invalid placement"
   );
 });
+
+test("valid attack is valid", () => {
+  const testBoard = new Gameboard();
+  testBoard.receiveAttack(1, 1);
+  expect(testBoard.attackIsValid(2, 2)).toBe(true);
+});
+
+test("invalid attack is invalid", () => {
+  const testBoard = new Gameboard();
+  testBoard.receiveAttack(1, 1);
+  expect(testBoard.attackIsValid(1, 1)).toBe(false);
+});

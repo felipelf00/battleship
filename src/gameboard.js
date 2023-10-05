@@ -50,6 +50,28 @@ class Gameboard {
     return true;
   }
 
+  // attackIsValid(x, y) {
+  //   if (
+  //     this.hitList.some((coordinate) => {
+  //       coordinate[0] === x && coordinate[1] === y;
+  //     })
+  //   ) {
+  //     return false;
+  //   } else return true;
+  // }
+
+  attackIsValid(x, y) {
+    if (
+      this.hitList.some(
+        (coordinate) => coordinate[0] === x && coordinate[1] === y
+      )
+    ) {
+      return false; // Attack is not valid
+    } else {
+      return true; // Attack is valid
+    }
+  }
+
   receiveAttack(x, y) {
     this.hitList.push([x, y]);
     if (this.board[x][y] instanceof Ship) {

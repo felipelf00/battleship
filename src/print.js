@@ -35,17 +35,29 @@ function printNameForm() {
     playerNameInput.value = "";
     computerNameInput.value = "";
     formContainer.classList.add("hidden");
-    //create player areas after getting name input:
+    //create turn display and player areas after getting name input:
+    // const turnDisplay = printTurnDisplay();
+    // document.querySelector("body").appendChild(turnDisplay);
     const leftPlayer = printPlayerArea(gameloop.players[0]);
     const rightPlayer = printPlayerArea(gameloop.players[1]);
     document.querySelector("body").appendChild(leftPlayer);
     document.querySelector("body").appendChild(rightPlayer);
     fillBoard(gameloop.players[0]);
-    fillBoard(gameloop.players[1]); //only for debug
+    fillBoard(gameloop.players[1]);
+    gameloop.next();
+    // document.querySelector("#turn-display").textContent =
+    //   gameloop.currentTurn.name + ", it's your turn!";
   });
 
   return formContainer;
 }
+
+// function printTurnDisplay() {
+//   const current = document.createElement("div");
+//   current.id = "turn-display";
+//   current.textContent = "";
+//   return current;
+// }
 
 function printPlayerArea(player) {
   const container = document.createElement("div");
@@ -71,25 +83,43 @@ function printBoard(player) {
       cell.classList.add("cell");
       container.appendChild(cell);
 
+      // if (player.type === "computer") {
+      //   //must also check if cell was already attacked
+      //   cell.addEventListener("click", () => {
+      //     if (gameloop.currentTurn === gameloop.players[0]) {
+      //       gameloop.players[1].board.receiveAttack(i, j);
+      //       registerAttack(i, j, gameloop.players[1]);
+      //       // console.log("human attacked at " + i + ", " + j);
+      //       gameloop.next();
+      //       //set timeout for computer play
+      //       const computerAttack = gameloop.players[1].computerPlays(
+      //         gameloop.players[0]
+      //       );
+      //       registerAttack(
+      //         computerAttack[0],
+      //         computerAttack[1],
+      //         gameloop.players[0]
+      //       );
+      //       gameloop.next();
+      //     }
+      //   });
+      // }
       if (player.type === "computer") {
-        //must also check if cell was already attacked
+        const human = gameloop.players[0];
+        const computer = gameloop.players[1];
+
         cell.addEventListener("click", () => {
-          if (gameloop.currentTurn === gameloop.players[0]) {
-            gameloop.players[1].board.receiveAttack(i, j);
-            registerAttack(i, j, gameloop.players[1]);
-            // console.log("human attacked at " + i + ", " + j);
+          if (
+            gameloop.currentTurn === human &&
+            computer.board.attackIsValid(i, j)
+          ) {
+            computer.board.receiveAttack(i, j);
+            registerAttack(i, j, computer);
             gameloop.next();
-            //set timeout for computer play
-            // console.log(gameloop.players[1]);
-            const computerAttack = gameloop.players[1].computerPlays(
-              gameloop.players[0]
-            );
-            registerAttack(
-              computerAttack[0],
-              computerAttack[1],
-              gameloop.players[0]
-            );
-            gameloop.next();
+            // // Set a timeout for the computer play
+            // const computerAttack = computer.computerPlays(human);
+            // registerAttack(computerAttack[0], computerAttack[1], human);
+            // gameloop.next();
           }
         });
       }
@@ -99,8 +129,6 @@ function printBoard(player) {
 }
 
 function fillBoard(player) {
-  // console.log("filling board for " + player.name);
-  // console.log("1, 1 is " + player.board.board[1][1]);
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
       if (player.board.board[i][j] instanceof Ship) {
@@ -108,6 +136,9 @@ function fillBoard(player) {
           `.cell[data-x="${i}"][data-y="${j}"][data-type="${player.type}"]`
         );
         cell.classList.add("ship");
+        if (player.type === "computer") {
+          cell.classList.add("invisible");
+        }
         if (player.board.board[i][j].isSunk) {
           cell.classList.add("sunk");
         }
@@ -129,4 +160,4 @@ function registerAttack(x, y, player) {
   }
 }
 
-export { printPage };
+export { printPage, registerAttack };

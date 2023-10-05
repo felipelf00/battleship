@@ -31,6 +31,10 @@ body {
   background-color: green;
 }
 
+.invisible {
+  background-color: white;
+}
+
 .ship.hit {
   background-color: red;
 }

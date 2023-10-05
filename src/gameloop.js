@@ -1,5 +1,6 @@
 // const Player = require("./player");
 import Player from "./player";
+import { registerAttack } from "./print";
 
 // let players = [];
 
@@ -28,20 +29,30 @@ const gameloop = {
     computer.board.placeShip(computer.ships[4], 3, 5);
     // console.log("1, 1 is: " + computer.board.board[1][1]);
     this.players = [player, computer];
-    this.next();
-    this.currentTurn = player;
+    // this.next();
+    // console.log(this.currentTurn);
+    // this.currentTurn = player;
+    // this.currentTurn = computer;
+    this.currentTurn = this.players[Math.round(Math.random())];
   },
 
   next() {
-    if (this.currentTurn === null) {
-      this.currentTurn = this.players[Math.round(Math.random() * 2)];
-      return;
-    }
+    // if (this.currentTurn === null) {
+    //   this.currentTurn = this.players[Math.round(Math.random())];
+    //   // return;
+    // }
     if (this.currentTurn === this.players[0]) {
       this.currentTurn = this.players[1];
-      // players[1].computerPlays(players[0]);
+      // document.querySelector("#turn-display").textContent =
+      //   this.currentTurn.name + ", it's your turn!";
+      const computerAttack = this.players[1].computerPlays(this.players[0]);
+      //imported from print
+      registerAttack(computerAttack[0], computerAttack[1], this.players[0]);
+      this.next();
     } else {
       this.currentTurn = this.players[0];
+      // document.querySelector("#turn-display").textContent =
+      //   gameloop.currentTurn.name + ", it's your turn!";
     }
   },
 };
