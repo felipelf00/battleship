@@ -6,8 +6,14 @@ function printPage() {
   const mainTitle = document.createElement("h1");
   mainTitle.textContent = "Battleship: a battle of ships";
   document.querySelector("body").appendChild(mainTitle);
-  //Player name form:
-  document.querySelector("body").appendChild(printNameForm());
+  //main area
+  const main = document.createElement("div");
+  main.id = "main";
+  document.body.appendChild(main);
+  //player name form:
+  main.appendChild(printNameForm());
+  //winner screen
+  // main.appendChild(printGameOver());
 }
 
 function printNameForm() {
@@ -32,32 +38,39 @@ function printNameForm() {
 
   submitNames.addEventListener("click", () => {
     gameloop.gameSetup(playerNameInput.value, computerNameInput.value);
-    playerNameInput.value = "";
-    computerNameInput.value = "";
-    formContainer.classList.add("hidden");
-    //create turn display and player areas after getting name input:
-    // const turnDisplay = printTurnDisplay();
-    // document.querySelector("body").appendChild(turnDisplay);
+    // playerNameInput.value = "";
+    // computerNameInput.value = "";
+    // formContainer.classList.add("hidden");
+    document.querySelector("#main").innerHTML = "";
     const leftPlayer = printPlayerArea(gameloop.players[0]);
     const rightPlayer = printPlayerArea(gameloop.players[1]);
-    document.querySelector("body").appendChild(leftPlayer);
-    document.querySelector("body").appendChild(rightPlayer);
+    document.querySelector("#main").appendChild(leftPlayer);
+    document.querySelector("#main").appendChild(rightPlayer);
     fillBoard(gameloop.players[0]);
     fillBoard(gameloop.players[1]);
     gameloop.next();
-    // document.querySelector("#turn-display").textContent =
-    //   gameloop.currentTurn.name + ", it's your turn!";
   });
-
   return formContainer;
 }
 
-// function printTurnDisplay() {
-//   const current = document.createElement("div");
-//   current.id = "turn-display";
-//   current.textContent = "";
-//   return current;
-// }
+function printGameOver() {
+  const container = document.createElement("div");
+  container.id = "game-over";
+  container.classList.add("hidden");
+  const winnerMessage = document.createElement("div");
+  winnerMessage.id = "winner-message";
+  const playAgain = document.createElement("button");
+  playAgain.textContent = "Play again";
+  container.appendChild(winnerMessage);
+  container.appendChild(playAgain);
+  playAgain.addEventListener("click", () => {
+    // container.classList.add("hidden");
+    // document.querySelector("#name-form").classList.remove("hidden");
+    document.querySelector("#main").innerHTML = "";
+    document.querySelector("#main").appendChild(printNameForm());
+  });
+  return container;
+}
 
 function printPlayerArea(player) {
   const container = document.createElement("div");
@@ -83,27 +96,6 @@ function printBoard(player) {
       cell.classList.add("cell");
       container.appendChild(cell);
 
-      // if (player.type === "computer") {
-      //   //must also check if cell was already attacked
-      //   cell.addEventListener("click", () => {
-      //     if (gameloop.currentTurn === gameloop.players[0]) {
-      //       gameloop.players[1].board.receiveAttack(i, j);
-      //       registerAttack(i, j, gameloop.players[1]);
-      //       // console.log("human attacked at " + i + ", " + j);
-      //       gameloop.next();
-      //       //set timeout for computer play
-      //       const computerAttack = gameloop.players[1].computerPlays(
-      //         gameloop.players[0]
-      //       );
-      //       registerAttack(
-      //         computerAttack[0],
-      //         computerAttack[1],
-      //         gameloop.players[0]
-      //       );
-      //       gameloop.next();
-      //     }
-      //   });
-      // }
       if (player.type === "computer") {
         const human = gameloop.players[0];
         const computer = gameloop.players[1];
@@ -160,4 +152,14 @@ function registerAttack(x, y, player) {
   }
 }
 
-export { printPage, registerAttack };
+function declareWinner(winner) {
+  document.querySelector("#main").innerHTML = "";
+  document.querySelector("#main").appendChild(printGameOver());
+  const gameOver = document.querySelector("#game-over");
+  gameOver.classList.remove("hidden");
+  document.querySelector(
+    "#winner-message"
+  ).textContent = `${winner.name} wins!`;
+}
+
+export { printPage, registerAttack, declareWinner };
