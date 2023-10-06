@@ -29,7 +29,7 @@ class Player {
     while (!valid) {
       attackX = Math.floor(Math.random() * 10);
       attackY = Math.floor(Math.random() * 10);
-      console.log(opponent.board.hitList);
+      // console.log(opponent.board.hitList);
       // if (
       //   !opponent.board.hitList.some(
       //     (coordinate) => coordinate[0] === attackX && coordinate[1] === attackY
@@ -40,7 +40,7 @@ class Player {
       if (opponent.board.attackIsValid(attackX, attackY)) valid = true;
     }
     opponent.board.receiveAttack(attackX, attackY);
-    console.log("computer attacked " + attackX + ", " + attackY);
+    // console.log("computer attacked " + attackX + ", " + attackY);
     return [attackX, attackY];
   }
 }

@@ -35,30 +35,41 @@ class Gameboard {
     } else throw new Error("invalid placement");
   }
 
+  // placementIsValid(ship, x, y) {
+  //   if (ship.orientation === "horizontal") {
+  //     if (x + ship.length - 1 > this.columns) return false;
+  //     for (let i = 0; i < ship.length - 1; i++) {
+  //       if (!this.board[x + i] || this.board[x + i][y] !== null) return false; //might be enough to validate placement
+  //     }
+  //   } else {
+  //     if (y + ship.length - 1 > this.rows) return false;
+  //     for (let i = 0; i < ship.length - 1; i++) {
+  //       if (!this.board[x][y + i] || this.board[x][y + i] !== null)
+  //         return false; //might be enough to validate placement
+  //     }
+  //   }
+  //   return true;
+  // }
+
   placementIsValid(ship, x, y) {
     if (ship.orientation === "horizontal") {
-      if (x + ship.length - 1 > this.columns) return false;
       for (let i = 0; i < ship.length; i++) {
-        if (this.board[x + i][y] !== null) return false; //might be enough to validate placement
+        if (x + i >= this.board.length || this.board[x + i][y] !== null) {
+          // console.log(`invalid. x: ${x}, y: ${y}, i: ${i}`);
+          return false; //might be enough to validate placement
+        }
       }
     } else {
-      if (y + ship.length - 1 > this.rows) return false;
       for (let i = 0; i < ship.length; i++) {
-        if (this.board[x][y + i] !== null) return false; //might be enough to validate placement
+        if (y + i >= this.board[x].length || this.board[x][y + i] !== null) {
+          // console.log(`invalid. x: ${x}, y: ${y}, i: ${i}`);
+          return false; //might be enough to validate placement
+        }
       }
     }
+    // console.log(`valid. x: ${x}, y: ${y}`);
     return true;
   }
-
-  // attackIsValid(x, y) {
-  //   if (
-  //     this.hitList.some((coordinate) => {
-  //       coordinate[0] === x && coordinate[1] === y;
-  //     })
-  //   ) {
-  //     return false;
-  //   } else return true;
-  // }
 
   attackIsValid(x, y) {
     if (
@@ -66,9 +77,9 @@ class Gameboard {
         (coordinate) => coordinate[0] === x && coordinate[1] === y
       )
     ) {
-      return false; // Attack is not valid
+      return false;
     } else {
-      return true; // Attack is valid
+      return true;
     }
   }
 

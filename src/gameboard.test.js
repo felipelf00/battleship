@@ -7,6 +7,7 @@ import Gameboard from "./gameboard";
 const myBoard = new Gameboard();
 
 const shipH3 = new Ship(3);
+const shipH2 = new Ship(2);
 const shipV2 = new Ship(2);
 shipV2.orientation = "vertical";
 
@@ -31,6 +32,8 @@ test("ship is placed vertically", () => {
 
 test("placement out of bounds", () => {
   expect(() => myBoard.placeShip(shipH3, 9, 0)).toThrow("invalid placement");
+  expect(myBoard.placementIsValid(shipH2, 9, 1)).toBe(false);
+  expect(() => myBoard.placeShip(shipH2, 9, 1)).toThrow("invalid placement");
   myBoard.clearBoard();
 });
 
