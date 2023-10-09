@@ -1,4 +1,5 @@
 // import { gameSetup, players } from "./gameloop";
+import Gameboard from "./gameboard";
 import gameloop from "./gameloop";
 import Ship from "./ship";
 
@@ -105,6 +106,11 @@ function flipShip(event) {
     shipDisplay.appendChild(
       printShip(gameloop.players[0].ships[shipDisplay.dataset.ship])
     );
+    //clear classes of cells being hovered
+    const cellsGood = document.querySelectorAll(".good-pos");
+    cellsGood.forEach((cell) => cell.classList.remove("good-pos"));
+    const cellsBad = document.querySelectorAll(".bad-pos");
+    cellsBad.forEach((cell) => cell.classList.remove("bad-pos"));
   }
 }
 
@@ -168,6 +174,113 @@ function printBoard(player) {
       if (player.type === "human") {
         const human = gameloop.players[0];
         // const computer = gameloop.players[1];
+
+        //placement preview on hover
+        cell.addEventListener("mouseenter", () => {
+          if (!gameloop.ready) {
+            const currentShip = human.ships[human.board.placedShips.length];
+            let x = parseInt(cell.dataset.x);
+            let y = parseInt(cell.dataset.y);
+            if (currentShip.orientation === "horizontal") {
+              if (x + currentShip.length - 1 > 9) {
+                for (let i = 0; i + x <= 9; i++) {
+                  const currentCell = document.querySelector(
+                    `.cell[data-x="${x + i}"][data-y="${y}"]`
+                  );
+                  if (currentCell) {
+                    currentCell.classList.add("bad-pos");
+                  }
+                }
+              } else {
+                for (let i = 0; i < currentShip.length; i++) {
+                  //out of bounds?
+
+                  const currentCell = document.querySelector(
+                    `.cell[data-x="${x + i}"][data-y="${y}"]`
+                  );
+                  if (currentCell) {
+                    currentCell.classList.add("good-pos");
+                  }
+                }
+              }
+            } else {
+              if (y + currentShip.length - 1 > 9) {
+                for (let i = 0; i + y <= 9; i++) {
+                  const currentCell = document.querySelector(
+                    `.cell[data-x="${x}"][data-y="${y + i}"]`
+                  );
+                  if (currentCell) {
+                    currentCell.classList.add("bad-pos");
+                  }
+                }
+              } else {
+                for (let i = 0; i < currentShip.length; i++) {
+                  //out of bounds?
+
+                  const currentCell = document.querySelector(
+                    `.cell[data-x="${x}"][data-y="${y + i}"]`
+                  );
+                  if (currentCell) {
+                    currentCell.classList.add("good-pos");
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        cell.addEventListener("mouseleave", () => {
+          if (!gameloop.ready) {
+            const currentShip = human.ships[human.board.placedShips.length];
+            let x = parseInt(cell.dataset.x);
+            let y = parseInt(cell.dataset.y);
+            if (currentShip.orientation === "horizontal") {
+              if (x + currentShip.length - 1 > 9) {
+                for (let i = 0; i + x <= 9; i++) {
+                  const currentCell = document.querySelector(
+                    `.cell[data-x="${x + i}"][data-y="${y}"]`
+                  );
+                  if (currentCell) {
+                    currentCell.classList.remove("bad-pos");
+                  }
+                }
+              } else {
+                for (let i = 0; i < currentShip.length; i++) {
+                  //out of bounds?
+
+                  const currentCell = document.querySelector(
+                    `.cell[data-x="${x + i}"][data-y="${y}"]`
+                  );
+                  if (currentCell) {
+                    currentCell.classList.remove("good-pos");
+                  }
+                }
+              }
+            } else {
+              if (y + currentShip.length - 1 > 9) {
+                for (let i = 0; i + y <= 9; i++) {
+                  const currentCell = document.querySelector(
+                    `.cell[data-x="${x}"][data-y="${y + i}"]`
+                  );
+                  if (currentCell) {
+                    currentCell.classList.remove("bad-pos");
+                  }
+                }
+              } else {
+                for (let i = 0; i < currentShip.length; i++) {
+                  //out of bounds?
+
+                  const currentCell = document.querySelector(
+                    `.cell[data-x="${x}"][data-y="${y + i}"]`
+                  );
+                  if (currentCell) {
+                    currentCell.classList.remove("good-pos");
+                  }
+                }
+              }
+            }
+          }
+        });
 
         //place human ships
         cell.addEventListener("click", () => {

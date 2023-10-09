@@ -106,7 +106,8 @@ button {
   background-color: var(--ocean);
 }
 
-.ship {
+.ship,
+.good-pos {
   background-color: var(--ship);
 }
 
@@ -114,7 +115,8 @@ button {
   background-color: var(--bg);
 }
 
-.ship.hit {
+.ship.hit,
+.bad-pos {
   background-color: var(--hit);
 }
 
