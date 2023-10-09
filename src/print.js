@@ -5,6 +5,7 @@ import Ship from "./ship";
 function printPage() {
   const mainTitle = document.createElement("h1");
   mainTitle.textContent = "Battleship: a battle of ships";
+  mainTitle.id = "main-title";
   document.querySelector("body").appendChild(mainTitle);
   //main area
   const main = document.createElement("div");
@@ -44,13 +45,81 @@ function printNameForm() {
     document.querySelector("#main").innerHTML = "";
     const leftPlayer = printPlayerArea(gameloop.players[0]);
     const rightPlayer = printPlayerArea(gameloop.players[1]);
+    rightPlayer.classList.add("computer"); //check if necessary
+
     document.querySelector("#main").appendChild(leftPlayer);
     document.querySelector("#main").appendChild(rightPlayer);
+
+    const rightPlayerBoard = document.querySelector(
+      ".player-area.computer .board"
+    );
+    rightPlayerBoard.appendChild(printPositioningDisplay());
+
     fillBoard(gameloop.players[0]);
     fillBoard(gameloop.players[1]);
-    gameloop.next();
+    // gameloop.next();
   });
   return formContainer;
+}
+
+function printPositioningDisplay() {
+  const container = document.createElement("div");
+  container.id = "positioning-display";
+  const instructions = document.createElement("div");
+  instructions.id = "instructions";
+  instructions.textContent = "Click your board to position your ship";
+  const shipDisplay = document.createElement("div");
+  shipDisplay.id = "ship-display";
+  shipDisplay.appendChild(printShip(gameloop.players[0].ships[0]));
+  shipDisplay.dataset.ship = 0;
+  const flip = document.createElement("button");
+  flip.id = "flip";
+  flip.textContent = "Flip orientation (f)";
+  // flip.addEventListener("click", () => {
+  //   const currentShip = gameloop.players[0].ships[shipDisplay.dataset.ship];
+  //   currentShip.flip();
+  //   shipDisplay.innerHTML = "";
+  //   shipDisplay.appendChild(
+  //     printShip(gameloop.players[0].ships[shipDisplay.dataset.ship])
+  //   );
+  // });
+  flip.addEventListener("click", flipShip);
+  document.addEventListener("keydown", flipShip);
+
+  container.appendChild(instructions);
+  container.appendChild(shipDisplay);
+  container.appendChild(flip);
+
+  return container;
+}
+
+function flipShip(event) {
+  if (
+    event.type === "click" ||
+    (event.type === "keydown" && event.key === "f")
+  ) {
+    const shipDisplay = document.querySelector("#ship-display");
+    const currentShip = gameloop.players[0].ships[shipDisplay.dataset.ship];
+    currentShip.flip();
+    shipDisplay.innerHTML = "";
+    shipDisplay.appendChild(
+      printShip(gameloop.players[0].ships[shipDisplay.dataset.ship])
+    );
+  }
+}
+
+function printShip(ship) {
+  const shipDisplay = document.createElement("div");
+  shipDisplay.id = "ship";
+  if (ship.orientation === "horizontal")
+    shipDisplay.classList.add("horizontal");
+  if (ship.orientation === "vertical") shipDisplay.classList.add("vertical");
+  for (let i = 0; i < ship.length; i++) {
+    const cell = document.createElement("div");
+    cell.classList.add("cell", "ship");
+    shipDisplay.appendChild(cell);
+  }
+  return shipDisplay;
 }
 
 function printGameOver() {
@@ -96,6 +165,42 @@ function printBoard(player) {
       cell.classList.add("cell");
       container.appendChild(cell);
 
+      if (player.type === "human") {
+        const human = gameloop.players[0];
+        // const computer = gameloop.players[1];
+
+        //place human ships
+        cell.addEventListener("click", () => {
+          if (!gameloop.ready) {
+            const currentShip = human.ships[human.board.placedShips.length];
+            human.board.placeShip(currentShip, i, j); //check for error
+            fillBoard(player);
+            //all ships placed?
+            if (human.board.placedShips.length >= 5) {
+              gameloop.ready = true;
+              const parent = document.querySelector(
+                ".player-area.computer .board"
+              );
+              const child = document.querySelector("#positioning-display");
+              parent.removeChild(child);
+              gameloop.next();
+              return;
+            }
+
+            const nextShip = human.ships[human.board.placedShips.length];
+            console.log(nextShip);
+            document.querySelector("#ship-display").innerHTML = "";
+            document
+              .querySelector("#ship-display")
+              .appendChild(printShip(nextShip));
+
+            document.querySelector("#ship-display").dataset.ship =
+              human.board.placedShips.length;
+            // return;
+          }
+        });
+      }
+
       if (player.type === "computer") {
         const human = gameloop.players[0];
         const computer = gameloop.players[1];
@@ -108,10 +213,6 @@ function printBoard(player) {
             computer.board.receiveAttack(i, j);
             registerAttack(i, j, computer);
             gameloop.next();
-            // // Set a timeout for the computer play
-            // const computerAttack = computer.computerPlays(human);
-            // registerAttack(computerAttack[0], computerAttack[1], human);
-            // gameloop.next();
           }
         });
       }

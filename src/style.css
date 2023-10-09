@@ -1,15 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;700&display=swap");
+
+* {
+  font-family: "Martian Mono", monospace;
+}
+
+:root {
+  --text: #0f1a20;
+  --bg: #f0f3f5;
+  --ship: #a0ad69;
+  /* --ship: #d5e1a3; */
+  --ocean: #78a1bb;
+  --hit: #f42c04;
+  --sunk: #6e2f22;
+}
+
 body {
   margin: 0;
-  padding: 0;
+  padding: 20px;
   box-sizing: border-box;
+
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+#main-title {
+  text-align: center;
+  margin-bottom: 69px;
+}
+
+button {
+  display: block;
+  background-color: var(--ocean);
+  padding: 8px 12px;
+}
+
+#name-form button {
+  margin: auto;
+  margin-top: 20px;
+}
+
+#name-form input {
+  width: 280px;
+  margin-top: 7px;
+}
+
+#name-form div {
+  margin-top: 20px;
 }
 
 .hidden {
   display: none;
 }
 
+#main {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  justify-content: center;
+}
+
+.player-area.computer .board {
+  position: relative;
+}
+
+#positioning-display {
+  position: absolute;
+  top: 0;
+  background-color: var(--bg);
+  width: 300px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#instructions {
+  text-align: center;
+}
+
+#ship-display {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .board {
-  border: 2px solid black;
+  border: 2px solid var(--text);
   width: 300px;
   height: 300px;
   display: grid;
@@ -17,28 +96,52 @@ body {
 }
 
 .cell {
-  border: 1px solid black;
+  border: 1px solid var(--text);
   width: 30px;
   height: 30px;
   box-sizing: border-box;
 }
 
 .hit {
-  background-color: grey;
+  background-color: var(--ocean);
 }
 
 .ship {
-  background-color: green;
+  background-color: var(--ship);
 }
 
 .invisible {
-  background-color: white;
+  background-color: var(--bg);
 }
 
 .ship.hit {
-  background-color: red;
+  background-color: var(--hit);
 }
 
 .ship.hit.sunk {
-  background-color: rgb(63, 22, 22);
+  background-color: var(--sunk);
+}
+
+#ship.horizontal {
+  display: flex;
+}
+
+#ship.vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+#game-over {
+  margin: auto;
+}
+
+#game-over button {
+  margin: auto;
+  margin-top: 20px;
+}
+
+@media only screen and (min-width: 600px) {
+  #main {
+    flex-direction: row;
+  }
 }
