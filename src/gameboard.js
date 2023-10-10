@@ -35,22 +35,6 @@ class Gameboard {
     } else throw new Error("invalid placement");
   }
 
-  // placementIsValid(ship, x, y) {
-  //   if (ship.orientation === "horizontal") {
-  //     if (x + ship.length - 1 > this.columns) return false;
-  //     for (let i = 0; i < ship.length - 1; i++) {
-  //       if (!this.board[x + i] || this.board[x + i][y] !== null) return false; //might be enough to validate placement
-  //     }
-  //   } else {
-  //     if (y + ship.length - 1 > this.rows) return false;
-  //     for (let i = 0; i < ship.length - 1; i++) {
-  //       if (!this.board[x][y + i] || this.board[x][y + i] !== null)
-  //         return false; //might be enough to validate placement
-  //     }
-  //   }
-  //   return true;
-  // }
-
   placementIsValid(ship, x, y) {
     if (ship.orientation === "horizontal") {
       for (let i = 0; i < ship.length; i++) {
@@ -101,6 +85,28 @@ class Gameboard {
         this.board[i][j] = null;
       }
     }
+  }
+
+  //for computer plays only:
+  // isHot(x, y) {
+  //   if (this.board[x][y] instanceof Ship && this.board[x][y].isSunk === false) {
+  //     return true;
+  //   }
+  //   const previousHit = this.hitList[this.hitList.length - 2];
+  //   if (
+  //     this.board[x][y] === null &&
+  //     previousHit &&
+  //     this.isHot(previousHit[0], previousHit[1])
+  //   ) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  hasGoodTarget() {
+    return this.placedShips.some((ship) => {
+      return ship.damage > 0 && !ship.isSunk;
+    });
   }
 }
 

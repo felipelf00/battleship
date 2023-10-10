@@ -94,3 +94,59 @@ test("invalid attack is invalid", () => {
   testBoard.receiveAttack(1, 1);
   expect(testBoard.attackIsValid(1, 1)).toBe(false);
 });
+
+// test("hotness: happy path", () => {
+//   const testBoard = new Gameboard();
+//   const ship1 = new Ship(3);
+//   testBoard.placeShip(ship1, 2, 2);
+//   testBoard.receiveAttack(2, 2);
+//   // console.log(testBoard.board[2][2]);
+//   expect(testBoard.isHot(2, 2)).toBe(true);
+// });
+
+// test("hotness: missed next", () => {
+//   const testBoard = new Gameboard();
+//   const ship1 = new Ship(3);
+//   testBoard.placeShip(ship1, 2, 2);
+//   testBoard.receiveAttack(2, 2);
+//   // console.log(testBoard.board[2][2]);
+//   testBoard.receiveAttack(2, 3);
+//   expect(testBoard.isHot(2, 3)).toBe(true);
+// });
+
+// test("hotness: missed another", () => {
+//   const testBoard = new Gameboard();
+//   const ship1 = new Ship(3);
+//   testBoard.placeShip(ship1, 2, 2);
+//   testBoard.receiveAttack(2, 2);
+//   // console.log(testBoard.board[2][2]);
+//   testBoard.receiveAttack(2, 3);
+//   testBoard.receiveAttack(2, 4);
+//   expect(testBoard.isHot(2, 4)).toBe(false);
+// });
+
+test("has good target", () => {
+  const testBoard = new Gameboard();
+  const ship1 = new Ship(3);
+  testBoard.placeShip(ship1, 2, 2);
+  testBoard.receiveAttack(2, 2);
+  expect(testBoard.hasGoodTarget()).toBe(true);
+});
+
+test("has no good target (sunk)", () => {
+  const testBoard = new Gameboard();
+  const ship1 = new Ship(3);
+  testBoard.placeShip(ship1, 2, 2);
+  testBoard.receiveAttack(2, 2);
+  testBoard.receiveAttack(3, 2);
+  testBoard.receiveAttack(4, 2);
+  expect(testBoard.hasGoodTarget()).toBe(false);
+});
+
+test("has no good target (no hit)", () => {
+  const testBoard = new Gameboard();
+  const ship1 = new Ship(3);
+  testBoard.placeShip(ship1, 2, 2);
+  testBoard.receiveAttack(5, 5);
+  expect(testBoard.hasGoodTarget()).toBe(false);
+});

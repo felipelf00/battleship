@@ -175,7 +175,7 @@ function printBoard(player) {
         const human = gameloop.players[0];
         // const computer = gameloop.players[1];
 
-        //placement preview on hover
+        //placement preview on hover (horrendous code)
         cell.addEventListener("mouseenter", () => {
           if (!gameloop.ready) {
             const currentShip = human.ships[human.board.placedShips.length];
@@ -301,7 +301,7 @@ function printBoard(player) {
             }
 
             const nextShip = human.ships[human.board.placedShips.length];
-            console.log(nextShip);
+            // console.log(nextShip);
             document.querySelector("#ship-display").innerHTML = "";
             document
               .querySelector("#ship-display")
