@@ -61,16 +61,56 @@ class Player {
     // console.log("last hit: " + lastHit);
 
     let nextHit = undefined;
-    let neighbors = [
-      [lastHit[0] + 1, lastHit[1]],
-      [lastHit[0] - 1, lastHit[1]],
-      [lastHit[0], lastHit[1] + 1],
-      [lastHit[0], lastHit[1] - 1],
-    ];
+    // let neighbors = [
+    //   [lastHit[0] + 1, lastHit[1]],
+    //   [lastHit[0] - 1, lastHit[1]],
+    //   [lastHit[0], lastHit[1] + 1],
+    //   [lastHit[0], lastHit[1] - 1],
+    // ];
+    let neighbors = [];
+
+    if (
+      lastHit[0] + 1 >= 0 &&
+      lastHit[0] + 1 < 10 &&
+      lastHit[1] >= 0 &&
+      lastHit[1] < 10
+    ) {
+      neighbors.push([lastHit[0] + 1, lastHit[1]]);
+    }
+    if (
+      lastHit[0] - 1 >= 0 &&
+      lastHit[0] - 1 < 10 &&
+      lastHit[1] >= 0 &&
+      lastHit[1] < 10
+    ) {
+      neighbors.push([lastHit[0] - 1, lastHit[1]]);
+    }
+    if (
+      lastHit[0] >= 0 &&
+      lastHit[0] < 10 &&
+      lastHit[1] + 1 >= 0 &&
+      lastHit[1] + 1 < 10
+    ) {
+      neighbors.push([lastHit[0], lastHit[1] + 1]);
+    }
+    if (
+      lastHit[0] >= 0 &&
+      lastHit[0] < 10 &&
+      lastHit[1] - 1 >= 0 &&
+      lastHit[1] - 1 < 10
+    ) {
+      neighbors.push([lastHit[0], lastHit[1] - 1]);
+    }
+
     console.log("Neighbors: ");
     console.log(neighbors);
     let emptyNeighbors = neighbors.reduce((acc, current) => {
-      if (opponent.board.board[current[0]][current[1]] === null) {
+      if (
+        !opponent.board.hitList.some((arr) =>
+          arr.every((val, index) => val === current[index])
+        )
+      ) {
+        // if (opponent.board.board[current[0]][current[1]] === null) {
         return acc.concat([[current[0], current[1]]]);
       }
       return acc;
@@ -94,11 +134,14 @@ class Player {
     console.log(emptyNeighbors);
     if (unsunkShipNeighbors.length === 0) {
       console.log("No neighbor hits");
-      nextHit =
-        emptyNeighbors[Math.round(Math.random() * emptyNeighbors.length)];
+      let randomIndex = Math.floor(Math.random() * emptyNeighbors.length);
+      console.log("Random index: " + randomIndex);
+      nextHit = emptyNeighbors[randomIndex];
       console.log("Next hit: " + nextHit);
-      opponent.board.receiveAttack(nextHit[0], nextHit[1]);
-      return [nextHit[0], nextHit[1]];
+      if (nextHit) {
+        opponent.board.receiveAttack(nextHit[0], nextHit[1]);
+        return [nextHit[0], nextHit[1]];
+      }
     }
     //if neighbor hit on top, attack below if valid. If not, try further above
     if (unsunkShipNeighbors[0][1] === lastHit[1] - 1) {

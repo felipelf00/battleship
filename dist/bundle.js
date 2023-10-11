@@ -373,18 +373,34 @@
                   (a = n),
                 (s += 1);
             }
-            let l = [
-              [a[0] + 1, a[1]],
-              [a[0] - 1, a[1]],
-              [a[0], a[1] + 1],
-              [a[0], a[1] - 1],
-            ];
-            console.log("Neighbors: "), console.log(l);
+            let l = [];
+            a[0] + 1 >= 0 &&
+              a[0] + 1 < 10 &&
+              a[1] >= 0 &&
+              a[1] < 10 &&
+              l.push([a[0] + 1, a[1]]),
+              a[0] - 1 >= 0 &&
+                a[0] - 1 < 10 &&
+                a[1] >= 0 &&
+                a[1] < 10 &&
+                l.push([a[0] - 1, a[1]]),
+              a[0] >= 0 &&
+                a[0] < 10 &&
+                a[1] + 1 >= 0 &&
+                a[1] + 1 < 10 &&
+                l.push([a[0], a[1] + 1]),
+              a[0] >= 0 &&
+                a[0] < 10 &&
+                a[1] - 1 >= 0 &&
+                a[1] - 1 < 10 &&
+                l.push([a[0], a[1] - 1]),
+              console.log("Neighbors: "),
+              console.log(l);
             let c = l.reduce(
                 (e, n) =>
-                  null === t.board.board[n[0]][n[1]]
-                    ? e.concat([[n[0], n[1]]])
-                    : e,
+                  t.board.hitList.some((e) => e.every((e, t) => e === n[t]))
+                    ? e
+                    : e.concat([[n[0], n[1]]]),
                 []
               ),
               d = l.reduce(
@@ -402,14 +418,17 @@
               console.log("emptyNeighbors:"),
               console.log(c),
               0 === d.length)
-            )
-              return (
-                console.log("No neighbor hits"),
-                (i = c[Math.round(Math.random() * c.length)]),
+            ) {
+              console.log("No neighbor hits");
+              let e = Math.floor(Math.random() * c.length);
+              if (
+                (console.log("Random index: " + e),
+                (i = c[e]),
                 console.log("Next hit: " + i),
-                t.board.receiveAttack(i[0], i[1]),
-                [i[0], i[1]]
-              );
+                i)
+              )
+                return t.board.receiveAttack(i[0], i[1]), [i[0], i[1]];
+            }
             if (d[0][1] === a[1] - 1) {
               if (
                 (console.log("Neighbor hit on top"),
@@ -836,11 +855,11 @@
         x = n.n(v),
         S = n(216),
         k = n.n(S),
-        C = n(589),
-        L = n.n(C),
+        L = n(589),
+        C = n.n(L),
         E = n(426),
         w = {};
-      (w.styleTagTransform = L()),
+      (w.styleTagTransform = C()),
         (w.setAttributes = x()),
         (w.insert = b().bind(null, "head")),
         (w.domAPI = g()),
