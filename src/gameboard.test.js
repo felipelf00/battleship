@@ -95,42 +95,14 @@ test("invalid attack is invalid", () => {
   expect(testBoard.attackIsValid(1, 1)).toBe(false);
 });
 
-// test("hotness: happy path", () => {
-//   const testBoard = new Gameboard();
-//   const ship1 = new Ship(3);
-//   testBoard.placeShip(ship1, 2, 2);
-//   testBoard.receiveAttack(2, 2);
-//   // console.log(testBoard.board[2][2]);
-//   expect(testBoard.isHot(2, 2)).toBe(true);
-// });
-
-// test("hotness: missed next", () => {
-//   const testBoard = new Gameboard();
-//   const ship1 = new Ship(3);
-//   testBoard.placeShip(ship1, 2, 2);
-//   testBoard.receiveAttack(2, 2);
-//   // console.log(testBoard.board[2][2]);
-//   testBoard.receiveAttack(2, 3);
-//   expect(testBoard.isHot(2, 3)).toBe(true);
-// });
-
-// test("hotness: missed another", () => {
-//   const testBoard = new Gameboard();
-//   const ship1 = new Ship(3);
-//   testBoard.placeShip(ship1, 2, 2);
-//   testBoard.receiveAttack(2, 2);
-//   // console.log(testBoard.board[2][2]);
-//   testBoard.receiveAttack(2, 3);
-//   testBoard.receiveAttack(2, 4);
-//   expect(testBoard.isHot(2, 4)).toBe(false);
-// });
-
 test("has good target", () => {
   const testBoard = new Gameboard();
   const ship1 = new Ship(3);
   testBoard.placeShip(ship1, 2, 2);
   testBoard.receiveAttack(2, 2);
-  expect(testBoard.hasGoodTarget()).toBe(true);
+  // expect(testBoard.hasGoodTarget()[0]).toEqual(ship1);
+  expect(testBoard.hasGoodTarget()[0]).toBe(2);
+  expect(testBoard.hasGoodTarget()[1]).toBe(2);
 });
 
 test("has no good target (sunk)", () => {
@@ -140,7 +112,7 @@ test("has no good target (sunk)", () => {
   testBoard.receiveAttack(2, 2);
   testBoard.receiveAttack(3, 2);
   testBoard.receiveAttack(4, 2);
-  expect(testBoard.hasGoodTarget()).toBe(false);
+  expect(testBoard.hasGoodTarget().length).toBe(0);
 });
 
 test("has no good target (no hit)", () => {
@@ -148,5 +120,12 @@ test("has no good target (no hit)", () => {
   const ship1 = new Ship(3);
   testBoard.placeShip(ship1, 2, 2);
   testBoard.receiveAttack(5, 5);
-  expect(testBoard.hasGoodTarget()).toBe(false);
+  expect(testBoard.hasGoodTarget().length).toBe(0);
+});
+
+test("findNeighbors happy", () => {
+  expect(myBoard.findNeighbors(1, 1)[0]).toEqual([2, 1]);
+  expect(myBoard.findNeighbors(1, 1)[1]).toEqual([0, 1]);
+  expect(myBoard.findNeighbors(1, 1)[2]).toEqual([1, 2]);
+  expect(myBoard.findNeighbors(1, 1)[3]).toEqual([1, 0]);
 });

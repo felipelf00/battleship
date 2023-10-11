@@ -64,6 +64,7 @@ const gameloop = {
     } else {
       if (this.ready && this.players[0].board.remainingShips() === 0) {
         declareWinner(this.players[1]);
+        this.ready = false;
         return;
       }
       this.currentTurn = this.players[0];

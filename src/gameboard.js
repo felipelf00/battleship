@@ -103,10 +103,51 @@ class Gameboard {
   //   return false;
   // }
 
+  // hasGoodTarget() {
+  //   return this.placedShips.some((ship) => {
+  //     return ship.damage > 0 && !ship.isSunk;
+  //   });
+  // }
+
+  // hasGoodTarget() {
+  //   return this.placedShips.filter((ship) => {
+  //     return ship.damage > 0 && !ship.isSunk;
+  //   });
+  // }
+
+  //returns a cell with a unsunken ship that has been hit
   hasGoodTarget() {
-    return this.placedShips.some((ship) => {
-      return ship.damage > 0 && !ship.isSunk;
-    });
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        let cell = this.board[i][j];
+        if (
+          cell instanceof Ship &&
+          cell.damage > 0 &&
+          !cell.isSunk &&
+          this.hitList.some((arr) => arr[0] === i && arr[1] === j)
+        ) {
+          return [i, j];
+        }
+      }
+    }
+    return [];
+  }
+
+  findNeighbors(x, y) {
+    let neighbors = [];
+    if (x + 1 >= 0 && x + 1 < 10 && y >= 0 && y < 10) {
+      neighbors.push([x + 1, y]);
+    }
+    if (x - 1 >= 0 && x - 1 < 10 && y >= 0 && y < 10) {
+      neighbors.push([x - 1, y]);
+    }
+    if (x >= 0 && x < 10 && y + 1 >= 0 && y + 1 < 10) {
+      neighbors.push([x, y + 1]);
+    }
+    if (x >= 0 && x < 10 && y - 1 >= 0 && y - 1 < 10) {
+      neighbors.push([x, y - 1]);
+    }
+    return neighbors;
   }
 }
 

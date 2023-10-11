@@ -143,6 +143,7 @@ function printGameOver() {
     // document.querySelector("#name-form").classList.remove("hidden");
     document.querySelector("#main").innerHTML = "";
     document.querySelector("#main").appendChild(printNameForm());
+    // console.log("gameloop.ready: " + gameloop.ready);
   });
   return container;
 }

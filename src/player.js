@@ -29,7 +29,11 @@ class Player {
     // let lastPlay = opponent.board.hitList[opponent.board.hitList.length - 1];
 
     //board is cold -> random hit
-    if (!opponent.board.hasGoodTarget()) {
+    const goodTarget = opponent.board.hasGoodTarget();
+    // console.log("good target:");
+    // console.log(goodTarget);
+    if (goodTarget.length === 0) {
+      console.log("no good target, attacking random");
       while (!valid) {
         attackX = Math.floor(Math.random() * 10);
         attackY = Math.floor(Math.random() * 10);
@@ -48,7 +52,7 @@ class Player {
         console.log("there's no last hit bc game just started");
       }
       let play = opponent.board.hitList[opponent.board.hitList.length - i];
-      console.log(play);
+      // console.log(play);
       if (
         opponent.board.board[play[0]][play[1]] instanceof Ship &&
         !opponent.board.board[play[0]][play[1]].isSunk
@@ -67,43 +71,43 @@ class Player {
     //   [lastHit[0], lastHit[1] + 1],
     //   [lastHit[0], lastHit[1] - 1],
     // ];
-    let neighbors = [];
+    let neighbors = opponent.board.findNeighbors(lastHit[0], lastHit[1]);
 
-    if (
-      lastHit[0] + 1 >= 0 &&
-      lastHit[0] + 1 < 10 &&
-      lastHit[1] >= 0 &&
-      lastHit[1] < 10
-    ) {
-      neighbors.push([lastHit[0] + 1, lastHit[1]]);
-    }
-    if (
-      lastHit[0] - 1 >= 0 &&
-      lastHit[0] - 1 < 10 &&
-      lastHit[1] >= 0 &&
-      lastHit[1] < 10
-    ) {
-      neighbors.push([lastHit[0] - 1, lastHit[1]]);
-    }
-    if (
-      lastHit[0] >= 0 &&
-      lastHit[0] < 10 &&
-      lastHit[1] + 1 >= 0 &&
-      lastHit[1] + 1 < 10
-    ) {
-      neighbors.push([lastHit[0], lastHit[1] + 1]);
-    }
-    if (
-      lastHit[0] >= 0 &&
-      lastHit[0] < 10 &&
-      lastHit[1] - 1 >= 0 &&
-      lastHit[1] - 1 < 10
-    ) {
-      neighbors.push([lastHit[0], lastHit[1] - 1]);
-    }
+    // if (
+    //   lastHit[0] + 1 >= 0 &&
+    //   lastHit[0] + 1 < 10 &&
+    //   lastHit[1] >= 0 &&
+    //   lastHit[1] < 10
+    // ) {
+    //   neighbors.push([lastHit[0] + 1, lastHit[1]]);
+    // }
+    // if (
+    //   lastHit[0] - 1 >= 0 &&
+    //   lastHit[0] - 1 < 10 &&
+    //   lastHit[1] >= 0 &&
+    //   lastHit[1] < 10
+    // ) {
+    //   neighbors.push([lastHit[0] - 1, lastHit[1]]);
+    // }
+    // if (
+    //   lastHit[0] >= 0 &&
+    //   lastHit[0] < 10 &&
+    //   lastHit[1] + 1 >= 0 &&
+    //   lastHit[1] + 1 < 10
+    // ) {
+    //   neighbors.push([lastHit[0], lastHit[1] + 1]);
+    // }
+    // if (
+    //   lastHit[0] >= 0 &&
+    //   lastHit[0] < 10 &&
+    //   lastHit[1] - 1 >= 0 &&
+    //   lastHit[1] - 1 < 10
+    // ) {
+    //   neighbors.push([lastHit[0], lastHit[1] - 1]);
+    // }
 
-    console.log("Neighbors: ");
-    console.log(neighbors);
+    // console.log("Neighbors: ");
+    // console.log(neighbors);
     let emptyNeighbors = neighbors.reduce((acc, current) => {
       if (
         !opponent.board.hitList.some((arr) =>
@@ -135,9 +139,9 @@ class Player {
     if (unsunkShipNeighbors.length === 0) {
       console.log("No neighbor hits");
       let randomIndex = Math.floor(Math.random() * emptyNeighbors.length);
-      console.log("Random index: " + randomIndex);
+      // console.log("Random index: " + randomIndex);
       nextHit = emptyNeighbors[randomIndex];
-      console.log("Next hit: " + nextHit);
+      // console.log("Next hit: " + nextHit);
       if (nextHit) {
         opponent.board.receiveAttack(nextHit[0], nextHit[1]);
         return [nextHit[0], nextHit[1]];
@@ -160,6 +164,14 @@ class Player {
               unsunkShipNeighbors[0][1] - i
             )
           ) {
+            //this is to prevent attacking further if cells before it are empty
+            if (
+              opponent.board.board[unsunkShipNeighbors[0][0]][
+                unsunkShipNeighbors[0][1] - i + 1
+              ] === null
+            ) {
+              break;
+            }
             opponent.board.receiveAttack(
               unsunkShipNeighbors[0][0],
               unsunkShipNeighbors[0][1] - i
@@ -189,6 +201,14 @@ class Player {
               unsunkShipNeighbors[0][1]
             )
           ) {
+            //this is to prevent attacking further if cells before it are empty
+            if (
+              opponent.board.board[unsunkShipNeighbors[0][0] + i - 1][
+                unsunkShipNeighbors[0][1]
+              ] === null
+            ) {
+              break;
+            }
             opponent.board.receiveAttack(
               unsunkShipNeighbors[0][0] + i,
               unsunkShipNeighbors[0][1]
@@ -218,6 +238,14 @@ class Player {
               unsunkShipNeighbors[0][1] + i
             )
           ) {
+            //this is to prevent attacking further if cells before it are empty
+            if (
+              opponent.board.board[unsunkShipNeighbors[0][0]][
+                unsunkShipNeighbors[0][1] + i - 1
+              ] === null
+            ) {
+              break;
+            }
             opponent.board.receiveAttack(
               unsunkShipNeighbors[0][0],
               unsunkShipNeighbors[0][1] + i
@@ -247,17 +275,44 @@ class Player {
               unsunkShipNeighbors[0][1]
             )
           ) {
+            //this is to prevent attacking further if cells before it are empty
+            if (
+              opponent.board.board[unsunkShipNeighbors[0][0]][
+                unsunkShipNeighbors[0][1] - i + 1
+              ] === null
+            ) {
+              break;
+            }
             opponent.board.receiveAttack(
               unsunkShipNeighbors[0][0] - i,
               unsunkShipNeighbors[0][1]
             );
-            console.log("Attacking further right");
+            console.log("Attacking further left");
             return [unsunkShipNeighbors[0][0] - i, unsunkShipNeighbors[0][1]];
           }
           i += 1;
         }
       }
     }
+    //find good target and attack a neighbor:
+    let newNeighbors = opponent.board.findNeighbors(
+      goodTarget[0],
+      goodTarget[1]
+    );
+    for (let i = 0; i < newNeighbors.length; i++) {
+      let candidate = newNeighbors[i];
+      if (opponent.board.attackIsValid(candidate[0], candidate[1])) {
+        console.log("Attacking new target");
+        opponent.board.receiveAttack(candidate[0], candidate[1]);
+        return [candidate[0], candidate[1]];
+      }
+    }
+
+    // newNeighbors.forEach(element => {
+    //   if(opponent.board.attackIsValid(element[0], element[1])) {
+
+    //   }
+    // });
 
     //shouldn't get here, but if so, do random attack:
     while (!valid) {
