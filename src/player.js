@@ -65,49 +65,8 @@ class Player {
     // console.log("last hit: " + lastHit);
 
     let nextHit = undefined;
-    // let neighbors = [
-    //   [lastHit[0] + 1, lastHit[1]],
-    //   [lastHit[0] - 1, lastHit[1]],
-    //   [lastHit[0], lastHit[1] + 1],
-    //   [lastHit[0], lastHit[1] - 1],
-    // ];
+
     let neighbors = opponent.board.findNeighbors(lastHit[0], lastHit[1]);
-
-    // if (
-    //   lastHit[0] + 1 >= 0 &&
-    //   lastHit[0] + 1 < 10 &&
-    //   lastHit[1] >= 0 &&
-    //   lastHit[1] < 10
-    // ) {
-    //   neighbors.push([lastHit[0] + 1, lastHit[1]]);
-    // }
-    // if (
-    //   lastHit[0] - 1 >= 0 &&
-    //   lastHit[0] - 1 < 10 &&
-    //   lastHit[1] >= 0 &&
-    //   lastHit[1] < 10
-    // ) {
-    //   neighbors.push([lastHit[0] - 1, lastHit[1]]);
-    // }
-    // if (
-    //   lastHit[0] >= 0 &&
-    //   lastHit[0] < 10 &&
-    //   lastHit[1] + 1 >= 0 &&
-    //   lastHit[1] + 1 < 10
-    // ) {
-    //   neighbors.push([lastHit[0], lastHit[1] + 1]);
-    // }
-    // if (
-    //   lastHit[0] >= 0 &&
-    //   lastHit[0] < 10 &&
-    //   lastHit[1] - 1 >= 0 &&
-    //   lastHit[1] - 1 < 10
-    // ) {
-    //   neighbors.push([lastHit[0], lastHit[1] - 1]);
-    // }
-
-    // console.log("Neighbors: ");
-    // console.log(neighbors);
     let emptyNeighbors = neighbors.reduce((acc, current) => {
       if (
         !opponent.board.hitList.some((arr) =>

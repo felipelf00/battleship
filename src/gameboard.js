@@ -1,4 +1,5 @@
 // const Ship = require("./ship");
+import gameloop from "./gameloop";
 import Ship from "./ship";
 
 class Gameboard {
@@ -31,6 +32,7 @@ class Gameboard {
           this.board[x][y + i] = ship;
         }
         this.placedShips.push(ship);
+        // if (this.placedShips.length >= 5) gameloop.ready = true;
       }
     } else throw new Error("invalid placement");
   }

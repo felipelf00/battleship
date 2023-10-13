@@ -8,6 +8,9 @@ function printPage() {
   mainTitle.textContent = "Battleship: a battle of ships";
   mainTitle.id = "main-title";
   document.querySelector("body").appendChild(mainTitle);
+  const messageArea = document.createElement("div");
+  messageArea.id = "message-area";
+  document.body.appendChild(messageArea);
   //main area
   const main = document.createElement("div");
   main.id = "main";
@@ -23,23 +26,30 @@ function printNameForm() {
   formContainer.id = "name-form";
   document.querySelector("body").appendChild(formContainer);
 
-  const playerName = document.createElement("div");
-  playerName.textContent = "Player name: ";
+  const playerNameLabel = document.createElement("div");
+  playerNameLabel.textContent = "Player name: ";
   const playerNameInput = document.createElement("input");
-  const computerName = document.createElement("div");
-  computerName.textContent = "Opponent name (computer): ";
+  playerNameInput.placeholder = "Player";
+  const computerNameLabel = document.createElement("div");
+  computerNameLabel.textContent = "Opponent name (computer): ";
   const computerNameInput = document.createElement("input");
+  computerNameInput.placeholder = "Computer";
   const submitNames = document.createElement("button");
   submitNames.textContent = "Start";
 
-  formContainer.appendChild(playerName);
+  formContainer.appendChild(playerNameLabel);
   formContainer.appendChild(playerNameInput);
-  formContainer.appendChild(computerName);
+  formContainer.appendChild(computerNameLabel);
   formContainer.appendChild(computerNameInput);
   formContainer.appendChild(submitNames);
 
   submitNames.addEventListener("click", () => {
-    gameloop.gameSetup(playerNameInput.value, computerNameInput.value);
+    const playerName = playerNameInput.value ? playerNameInput.value : "Player";
+    const computerName = computerNameInput.value
+      ? computerNameInput.value
+      : "Computer";
+    // gameloop.gameSetup(playerNameInput.value, computerNameInput.value);
+    gameloop.gameSetup(playerName, computerName);
     // playerNameInput.value = "";
     // computerNameInput.value = "";
     // formContainer.classList.add("hidden");
@@ -141,6 +151,7 @@ function printGameOver() {
   playAgain.addEventListener("click", () => {
     // container.classList.add("hidden");
     // document.querySelector("#name-form").classList.remove("hidden");
+    document.querySelector("#message-area").innerHTML = "";
     document.querySelector("#main").innerHTML = "";
     document.querySelector("#main").appendChild(printNameForm());
     // console.log("gameloop.ready: " + gameloop.ready);
@@ -368,13 +379,18 @@ function registerAttack(x, y, player) {
 }
 
 function declareWinner(winner) {
-  document.querySelector("#main").innerHTML = "";
-  document.querySelector("#main").appendChild(printGameOver());
+  // document.querySelector("#main").innerHTML = "";
+  // document.querySelector("#main").appendChild(printGameOver());
+  document.querySelector("#message-area").innerHTML = "";
+  document.querySelector("#message-area").appendChild(printGameOver());
   const gameOver = document.querySelector("#game-over");
   gameOver.classList.remove("hidden");
   document.querySelector(
     "#winner-message"
   ).textContent = `${winner.name} wins!`;
+  document.querySelectorAll(".invisible").forEach((cell) => {
+    cell.classList.remove("invisible");
+  });
 }
 
 export { printPage, registerAttack, declareWinner };

@@ -25,7 +25,11 @@ body {
 
 #main-title {
   text-align: center;
-  margin-bottom: 69px;
+  /* margin-bottom: 69px; */
+}
+
+#message-area {
+  height: 69px;
 }
 
 button {
@@ -55,7 +59,7 @@ button {
 #main {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 10px;
   justify-content: center;
 }
 
@@ -100,6 +104,7 @@ button {
   width: 30px;
   height: 30px;
   box-sizing: border-box;
+  cursor: crosshair;
 }
 
 .hit {
@@ -134,7 +139,8 @@ button {
 }
 
 #game-over {
-  margin: auto;
+  /* margin: auto; */
+  text-align: center;
 }
 
 #game-over button {
@@ -145,5 +151,9 @@ button {
 @media only screen and (min-width: 600px) {
   #main {
     flex-direction: row;
+    gap: 50px;
+  }
+  #message-area {
+    margin: 36px 0 20px 0;
   }
 }
